@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 using namespace std;
 #define MAX_DAY 37
-#define WANt_TODONE 100
+#define WANt_TODO 100
 int main()
 {
     int day = 0;
@@ -25,8 +25,7 @@ int main()
         if( AleadyDone == 100)
             break;
     }
-    cout<<AleadyDone<<endl;
-    if( AleadyDone >= WANt_TODONE )
+    if( AleadyDone >= WANt_TODO )
     {
         cout<<"Can do it"<<endl;
         cout<<"Which will spend "<<day<<" days "<<endl;
