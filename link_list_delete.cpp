@@ -58,9 +58,43 @@ void Print( Node *Ptrl )
     }
     cout<<endl;
 }
-void Insert( Node *Ptrl )
+void Insert( Node *Ptrl ,int k)
 {
     link *p,*q;
+    int InsetNum,i = 1;
+    cin>>InsetNum;
+    for(  p = Ptrl->head; p != NULL; p = p->Next,i++ ){
+
+        if( i == k ){
+            p = ( link* )malloc( sizeof(link) );
+            p->value = InsetNum;
+            p->Next = q->Next;
+            q->Next = p;
+        }
+        q = p;
+    }
+}
+void Delete( Node *Ptrl )
+{
+    int DeleNum;
+    cin>>DeleNum;
+    link *p,*q;
+    for( p = Ptrl->head; p != NULL; p = p->Next ){
+
+        if( p->value == DeleNum ){
+            //Border Question: if i wan'to Delete the first one Element
+            if( ){
+
+
+            }else{
+                q->Next = p->Next;
+                free(p);
+                return ;
+            }
+        }
+        q = p;
+    }
+    cout<<"No found this number"<<endl;
 
 }
 int main()
@@ -70,4 +104,8 @@ int main()
     Assign( &form );
     Print( &form );
     FoundNumber( &form,3);
+    Insert( &form ,3);
+    Print( &form );
+    Delete( &form );
+    Print( &form );
 }
