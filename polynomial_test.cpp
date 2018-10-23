@@ -83,9 +83,70 @@ List *Sum( List *Ptrl,List *Strl ){
     free(del);
     return NewStack;
 }
-List *Mult()
-{
-    List *NewStack,*tmp;
+List *Mult( List *Ptrl,List *Strl ){
+    List *NewStack,*tmp,*P1,*S1,*q,*del,*t;
+    NewStack = (List*)malloc( sizeof(List) );
+    NewStack->next = NULL;
+    P1 = Ptrl;
+    S1 = Strl;
+    tmp = NewStack;
+    int SumXiShu,SumZhiShu;
+    if( !P1 || !S1 )
+        return NULL;
+
+    while( S1 ){
+
+        SumXiShu  = P1->XiShu * S1->XiShu;
+        SumZhiShu = P1->ZiShu + S1->ZiShu;
+
+        //插入到表里面
+        Push(SumXiShu,SumZhiShu,tmp);
+//        q = (List*)malloc( sizeof(List) );
+//        q->XiShu = SumXiShu;
+//        q->ZiShu = SumZhiShu;
+//        q->next = NULL;
+//        tmp->next = q;
+//        tmp = tmp->next;
+        S1 =S1->next;
+    }
+    //循环出来了以后 链表中就有了一堆指数从高到低排序好的值 是P1第一项跟S1的每一项相乘的结果
+    P1 = P1->next;
+
+    while( P1 ){
+
+        S1 = Strl,tmp = NewStack;
+        while( S1 ){
+            SumXiShu  = P1->XiShu * S1->XiShu;
+            SumZhiShu = P1->ZiShu + S1->ZiShu;
+            //由于链表NewStack中已经有值了，现在要确定的是插入的位置
+            while( tmp->next && tmp->next->XiShu > SumZhiShu )
+                tmp = tmp->next;
+            if( tmp->next && tmp->next->ZiShu == SumZhiShu ){
+
+                if( tmp->next->XiShu + SumXiShu ){
+                    tmp->next->XiShu *= SumXiShu;
+                }else{
+                    t = tmp->next;
+                    tmp->next = t->next;
+                    free(t);
+                }
+            }else{
+                t = (List*)malloc( sizeof(List) );
+                t->XiShu = SumXiShu;
+                t->ZiShu = SumZhiShu;
+                //insert
+                t->next  = tmp->next;
+                tmp->next = t;
+                tmp = tmp->next;
+            }
+            S1 = S1->next;
+        }
+        P1 = P1->next;
+    }
+    del = NewStack;
+    NewStack = NewStack->next;
+    free(del);
+    return NewStack;
 
 }
 void Print( List *Ptrl ){
@@ -101,6 +162,8 @@ int main()
   List *st1,*st2,*st;
   st1 = Create();
   st2 = Create();
+  st = Mult(st1,st2);
+  Print(st);
   st = Sum(st1,st2);
   Print(st);
 
